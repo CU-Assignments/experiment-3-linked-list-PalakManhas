@@ -1,0 +1,62 @@
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int val) {
+        this.val = val;
+        this.next = null;
+    }
+}
+
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+
+        // Dummy node to handle edge cases
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+        ListNode prev = dummy;
+
+        while (head != null) {
+            // If it's a duplicate, skip all occurrences
+            if (head.next != null && head.val == head.next.val) {
+                while (head.next != null && head.val == head.next.val) {
+                    head = head.next; // Skip duplicates
+                }
+                prev.next = head.next; // Remove all occurrences
+            } else {
+                prev = prev.next; // Move prev only if no deletion occurred
+            }
+            head = head.next; // Move head forward
+        }
+
+        return dummy.next; // Return the updated list
+    }
+
+    // Helper function to print the linked list
+    public static void printList(ListNode head) {
+        while (head != null) {
+            System.out.print(head.val + " -> ");
+            head = head.next;
+        }
+        System.out.println("null");
+    }
+
+    public static void main(String[] args) {
+        // Creating sample linked list: 1 -> 2 -> 3 -> 3 -> 4 -> 4 -> 5
+        ListNode head = new ListNode(1);
+        head.next = new ListNode(2);
+        head.next.next = new ListNode(3);
+        head.next.next.next = new ListNode(3);
+        head.next.next.next.next = new ListNode(4);
+        head.next.next.next.next.next = new ListNode(4);
+        head.next.next.next.next.next.next = new ListNode(5);
+
+        Solution solution = new Solution();
+        ListNode result = solution.deleteDuplicates(head);
+
+        // Print the updated linked list
+        printList(result);
+    }
+}
